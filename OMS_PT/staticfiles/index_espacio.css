@@ -1,0 +1,17 @@
+#titulo{
+    background-color: brown;
+}
+
+#listaEspacios {
+    width: 50%;
+}
+
+li{
+    display: flex;
+    justify-content: space-around;
+}
+
+.options{
+    margin-left: 10px;
+    float: right;
+}

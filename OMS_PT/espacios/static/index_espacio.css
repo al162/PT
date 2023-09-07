@@ -1,0 +1,42 @@
+body{
+    background-color: #fecea8;
+}
+
+#titulo{
+    background-color: #ff847c;
+    background-image: linear-gradient(to bottom right, #ff847c, #ff8401);
+    text-align: center;
+    color: white;
+    padding: 1%;
+}
+
+#boton{
+    margin: 10px;
+}
+
+#listaEspacios {
+    width: 50%;
+    margin-left: 10px;
+}
+
+li{
+    display: flex;
+    justify-content: space-around;
+}
+
+.options{
+    margin-left: 10px;
+    float: right;
+}
+
+.btn{
+    background-color: #ff847c;
+    border-color: #e84a5f;
+    color: white;
+}
+
+.btn:hover{
+    background-color: #e84a5f;
+    border-color: red;
+    color: white;
+}

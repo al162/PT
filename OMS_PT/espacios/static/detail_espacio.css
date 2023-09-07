@@ -1,0 +1,81 @@
+body{
+    background-color: #fecea8;
+}
+
+#titulo{
+    background-color: #ff847c;
+    background-image: linear-gradient(to bottom right, #ff847c, #ff8401);
+    text-align: center;
+    color: white;
+    padding: 1%;
+}
+
+#nombre_crud{
+    width: 50%;
+}
+
+.crud_box{
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 1%;
+    background-color: #ff847c;
+    color: white;
+    border-radius: 20px;
+    padding: 1%;
+}
+
+#crud_box_prod{
+    width: 40%;
+    margin-left: 5%;
+    margin-top: 1%;
+    background-color: #ff847c;
+    color: white;
+    border-radius: 20px;
+    padding: 1%;
+}
+
+.crud_lbl{
+    color: black;
+    margin-left: 21%;
+}
+
+.form-control{
+    width: 75%;
+    margin-left: 21%;
+}
+
+#listaEspacios {
+    width: 40%;
+    margin-left: 21%;
+    margin-top: 2%;
+    background-color: #fecea8;
+    color: black;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+li{
+    color: black;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav ul{height:200px;}
+nav ul{overflow:hidden; overflow-y:scroll;}
+
+.options{
+    margin-left: 10px;
+    float: right;
+}
+
+.btn{
+    background-color: #ff847c;
+    border-color: #e84a5f;
+    color: white;
+}
+
+.btn:hover{
+    background-color: #e84a5f;
+    border-color: red;
+    color: white;
+}

@@ -1,0 +1,55 @@
+{% load rest_framework %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/ver_espacio.css" type="text/css">
+    <title>Consultar espacio</title>
+</head>
+<body>
+    <div id="titulo">
+        <h1>Consultar espacio</h1>
+    </div>
+    <div class="crud_box">
+        <form class="form-horizontal" action="{% url 'ver_espacio' espacio.pk %}" method="get">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <label>Nombre del espacio :</label>
+                </div>
+            </div>
+            {% render_form serializer template_pack='rest_framework/horizontal' %}
+        </form>
+    </div>
+    
+    <div id="listaEspacios">
+        <nav>
+            <ul class="list-group">
+                <h4>Productos en el espacio:</h2>
+                {% for producto in product_list %}
+                {% if producto.espacio_id == espacio.id%}
+                <li class="list-group-item">
+                    {{producto.nombre_prod}}
+                </li>
+                    
+                {%else%}
+                <li class="list-group-item">
+                    -
+                </li>
+                {%endif%}
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <a href="/espacios/">
+                <button type="button" class="btn btn-success">Volver</button>
+            </a>
+        </div>
+    </div>
+</body>
