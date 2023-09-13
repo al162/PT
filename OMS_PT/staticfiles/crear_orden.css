@@ -1,0 +1,9 @@
+#box_producto{
+    width: 80%;
+    height: 70%;
+    border-color: black;
+}
+
+ul {
+    list-style-type: none;
+}

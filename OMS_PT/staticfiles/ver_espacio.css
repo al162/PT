@@ -41,15 +41,14 @@ body{
 
 .form-control{
     width: 75%;
-    margin-left: 21%;
 }
 
 #listaEspacios {
     width: 40%;
-    margin-left: 21%;
+    margin-left: 5%;
     margin-top: 2%;
-    background-color: #fecea8;
-    color: black;
+    background-color: #ff847c;
+    color: white;
     padding: 10px;
     border-radius: 20px;
 }

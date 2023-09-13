@@ -4,6 +4,8 @@ from espacios import views
 
 urlpatterns = [
     path('espacios/', views.EspacioIndex.as_view(), name='espacios'),
+    path('ordenes/', views.ProductoView.as_view(), name= 'ordenes'),
+
     path('espacios/<int:pk>/', views.EspacioIndex.delete, name='borrar_espacio'),
     path('espacios/crearEspacio/', views.EspacioCreate.as_view(), name= 'crear_espacio'),
     path('espacios/espacioDetail/<int:pk>/', views.EspacioDetail.as_view(), name= 'detail_espacio'),

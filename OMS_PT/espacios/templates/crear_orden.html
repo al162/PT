@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/3994568d91.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/addProducto.js"></script>
+    <link rel="stylesheet" href="/static/crear_orden.css" type="text/css">
+    <title>Crear orden</title>
+</head>
+<body>
+    <div id="top_box">
+        <div id="box_lista_productos">
+            <h3>Productos agregados: </h3>
+            <div class="scroll">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-table">
+                    </tbody>
+                 </table>    
+            </div>
+        </div>
+        <div id="box_total">
+            <form>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Total a pagar: </label>
+                    <div class="col-md-1">
+                        <input type="number" id="lbl_precio" placeholder="0.00" readonly value="0.00">
+                    </div>
+                </div>
+            </form>
+        </div>    
+    </div>
+    
+
+    <div class="btn-group btn-group-lg">
+        <nav>
+            <ul>
+                {% for producto in product_list %}
+                <button id="{{producto.nombre_prod}}" class="btn_prod" onclick="agregar_prod('{{producto.nombre_prod}}', '{{producto.precio}}')">
+                    {{producto.nombre_prod}}<br>
+                    ${{producto.precio}} 
+                </button>
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

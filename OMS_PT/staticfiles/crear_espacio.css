@@ -10,18 +10,37 @@ body{
     padding: 1%;
 }
 
-#boton{
-    margin: 10px;
-}
-
-#listaEspacios {
+#nombre_crud{
     width: 50%;
-    margin-left: 10px;
 }
 
-li{
-    display: flex;
-    justify-content: space-around;
+.crud_box{
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 5%;
+    background-color: #ff847c;
+    color: white;
+    border-radius: 20px;
+    padding: 1%;
+}
+
+#crud_box_prod{
+    width: 40%;
+    margin-left: 5%;
+    margin-top: 1%;
+    background-color: #ff847c;
+    color: white;
+    border-radius: 20px;
+    padding: 1%;
+}
+
+.crud_lbl{
+    color: black;
+    text-align: center;
+}
+
+.form-control{
+    width: 75%;
 }
 
 .options{
