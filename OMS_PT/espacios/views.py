@@ -1,5 +1,6 @@
-from espacios.models import Espacio, Producto
-from espacios.serializers import EspacioSerializer, ProductoSerializer
+from collections import Counter
+from espacios.models import Espacio, Producto, Orden, OrdenProducto
+from espacios.serializers import EspacioSerializer, ProductoSerializer, OrdenSerializer, OrdenProductoSerializer
 from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
@@ -71,15 +72,6 @@ class EspacioVer(APIView):
         serializer = EspacioSerializer(espacio)
         return Response({'serializer': serializer, 'espacio': espacio, 'product_list': query_prod_list})
 
-#Vista para ver productos
-class ProductoView(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'crear_orden.html'
-
-    def get(self, request):
-        queryset = Producto.objects.all()
-        return Response({'product_list': queryset})
-
 #Vista para actualizar datos de un producto    
 class ProductoDetail(APIView):
     def get(self, request, pk):
@@ -98,3 +90,57 @@ class ProductoDetail(APIView):
         producto = Producto.objects.get(pk = pk)
         producto.delete()
         return redirect ('/espacios/espacioDetail/%d' %id)
+
+#Vista para crear una orden
+class OrdenCreate(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'crear_orden.html'
+
+    def get(self, request):
+        queryset = Producto.objects.all()
+        return Response({'product_list': queryset})
+    
+    def post(self, request):
+
+        codigo = request.POST.get('codigo')
+        productos_ids = request.POST.getlist('productos')
+        productos_ids_counter = Counter(productos_ids)
+        
+        orden = Orden.objects.create(codigo = codigo)
+        productos = []
+        for id in productos_ids:
+            new_producto = {
+                'orden': orden.id,
+                'producto': id,
+                'cantidad' : productos_ids_counter[id]
+            }
+            productos.append(new_producto)
+
+        serializer = OrdenSerializer(data = {'codigo': codigo, 'productos': productos})
+        
+        if(serializer.is_valid()):
+            serializer.save()
+    
+        return redirect('ordenes')
+
+
+#Vista para consultar ordenes por espacio
+class OrdenesVer(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'centro_ordenes.html'
+
+    def get(self, request):
+        queryset = Espacio.objects.all()
+        return Response({'espacios': queryset})
+    
+class OrdenesDetail(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'orden_espacio.html'
+
+    def get(self, request, pk):
+        espacio = get_object_or_404(Espacio, pk=pk)
+        queryset = EspacioSerializer(espacio)
+        serializer = Orden.objects.all()
+        return Response({'espacio': queryset, 'serializer': serializer})
+
+

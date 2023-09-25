@@ -1,0 +1,32 @@
+{% load rest_framework %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenes en espacio</title>
+</head>
+<body>
+    <div>
+        <h1>{{espacio.nombre_spc.value}}</h1>
+    </div>
+    <div>
+        <ul>
+            {% for orden in serializer %}
+            <li>
+                {{orden.codigo}}
+                <br>
+                {%  for producto in orden.producto%}
+                <p>
+                    {{producto.nombre_prod}}
+                </p>
+                {% endfor %}
+                <br>
+            </li>
+            {% endfor %}
+        </ul>
+        
+    </div>
+</body>
+</html>

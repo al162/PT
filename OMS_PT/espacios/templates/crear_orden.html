@@ -1,56 +1,80 @@
+{% load rest_framework %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/3994568d91.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/addProducto.js"></script>
     <link rel="stylesheet" href="/static/crear_orden.css" type="text/css">
     <title>Crear orden</title>
 </head>
 <body>
-    <div id="top_box">
-        <div id="box_lista_productos">
-            <h3>Productos agregados: </h3>
-            <div class="scroll">
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Borrar</th>
-                        </tr>
-                    </thead>
-                    <tbody id="body-table">
-                    </tbody>
-                 </table>    
-            </div>
+    <div id="main_box">
+
+        <div class="btn-group btn-group-lg">
+            <nav>
+                <ul>
+                    {% for producto in product_list %}
+                    <button id="{{producto.nombre_prod}}" class="btn_prod" onclick="agregar_prod('{{producto.id}}','{{producto.nombre_prod}}', '{{producto.precio}}')">
+                        {{producto.nombre_prod}}<br>
+                        ${{producto.precio}} 
+                    </button>
+                    {% endfor %}
+                </ul>
+            </nav>
         </div>
-        <div id="box_total">
-            <form>
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label">Total a pagar: </label>
+        
+        <div id="box_total" class="container">
+
+            <div id="box_lista_productos" class="row">
+                <h3>Productos agregados: </h3>
+                <div class="scroll">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Borrar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-table">
+                        </tbody>
+                    </table>    
+                </div>
+                <div id = "total">
+                    <label for="lbl_precio" class="col-md-4 col-form-label">Total a pagar: </label>
                     <div class="col-md-1">
                         <input type="number" id="lbl_precio" placeholder="0.00" readonly value="0.00">
                     </div>
                 </div>
-            </form>
+            </div>
+            <div class="row">
+                <form action="{% url 'ordenes' %}" method="post">
+                    {% csrf_token %}
+                
+                    <div class="form-group row">
+                        <label for="codigo" class="col-sm-2 col-form-label">Nombre: </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Nombre">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <ul id= "listaInput" hidden></ul>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-4 col-md-4">
+                            <button type="submit" id="btn_enviar"  class="btn btn-success btn-lg">Enviar Orden</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
         </div>    
     </div>
     
-
-    <div class="btn-group btn-group-lg">
-        <nav>
-            <ul>
-                {% for producto in product_list %}
-                <button id="{{producto.nombre_prod}}" class="btn_prod" onclick="agregar_prod('{{producto.nombre_prod}}', '{{producto.precio}}')">
-                    {{producto.nombre_prod}}<br>
-                    ${{producto.precio}} 
-                </button>
-                {% endfor %}
-            </ul>
-        </nav>
-    </div>
 </body>
 </html>
