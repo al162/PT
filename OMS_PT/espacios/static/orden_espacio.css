@@ -1,0 +1,22 @@
+body{
+    background-color: #e3f6f5;
+}
+
+#titulo{
+    background-color: #55e3e3;
+    text-align: center;
+    color: #005959;
+    padding: 1%;
+}
+
+#ordenes_box{
+    margin-left: 30%;
+}
+
+.cabecera-orden{
+    display: flex;
+}
+
+.btn{
+    margin-top: 2%;
+}

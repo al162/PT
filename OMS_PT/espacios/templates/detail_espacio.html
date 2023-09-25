@@ -32,12 +32,12 @@
         </form>
     </div>
 
-    <div id="crud_box_prod">
+    <div id="crud_box_prod" class="row">
         <form class="form-horizontal" action="{% url 'add_producto' espacio.pk %}" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <label>Nombre del producto :</label>
+                    <label>Crear nuevo producto :</label>
                 </div>
             </div>
             {% render_field serializer_prod.nombre_prod style=style %}
@@ -50,7 +50,7 @@
             </div>
         </form>
 
-        <div id="listaEspacios">
+        <div id="listaEspacios" class="col-sm-offset-2 col-sm-10">
             <nav>
                 <ul class="list-group">
                     <h4>Productos en el espacio:</h2>
@@ -62,10 +62,6 @@
                             <a href='{% url "borrar_producto" producto.pk espacio.pk%}' class="fa-solid fa-trash"></a>
                         </div>
                     </li>
-                    {%else%}
-                    <li class="list-group-item">
-                        -
-                    </li>
                     {%endif%}
                     {% endfor %}
                 </ul>
@@ -76,7 +72,7 @@
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <a href="/espacios/">
-                <button type="button" class="btn btn-success">Volver</button>
+                <button type="button" class="btn btn-success btn-lg">Volver</button>
             </a>
         </div>
     </div>

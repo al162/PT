@@ -5,28 +5,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script type="text/javascript" src="/static/updateOrdenes.js"></script>
+    <link rel="stylesheet" href="/static/orden_espacio.css" type="text/css">
     <title>Ordenes en espacio</title>
 </head>
 <body>
     <div>
-        <h1>{{espacio.nombre_spc.value}}</h1>
+        <h1 id="titulo">Notificaciones espacio de producción : {{espacio.nombre_spc}}</h1>
     </div>
-    <div>
-        <ul>
-            {% for orden in serializer %}
-            <li>
-                {{orden.codigo}}
-                <br>
-                {%  for producto in orden.producto%}
-                <p>
-                    {{producto.nombre_prod}}
-                </p>
-                {% endfor %}
-                <br>
-            </li>
-            {% endfor %}
-        </ul>
-        
+    <div id = "ordenes_box">
+        {%for orden in ordenes%}
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div>
+                                {{orden.codigo}}#{{orden.id}}
+                            </div>
+                            <div class="fecha">
+                                {{orden.date}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-default">
+                            <thead>
+                              <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Cantidad</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                        {% for ordenProducto in ordenesProductos%}
+                            {% if orden.id == ordenProducto.orden_id %}
+                                <tr>
+                                {% for producto in productos%}
+                                    {%if producto.id == ordenProducto.producto_id %}
+                                        <td>{{producto.nombre_prod}}</td>
+                                    {%endif%}
+                                {%endfor%}
+                                        <td>{{ordenProducto.cantidad}}</td>
+                                </tr>
+                            {% endif %}
+                        {%endfor%}
+                            </tbody>
+                        </table>
+                        <div>
+                            <a href='{% url "borrar_orden" espacio.pk orden.pk%}' class="btn btn-danger">Completar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        {%endfor%}  
+        <div class="col-sm-offset-2 col-sm-10">
+            <a href="/ordenesCentro/">
+                <button type="button" class="btn btn-success">Volver</button>
+            </a>
+        </div>                
     </div>
 </body>
 </html>

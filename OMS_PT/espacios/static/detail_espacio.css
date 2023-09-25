@@ -45,10 +45,9 @@ body{
 }
 
 #listaEspacios {
-    width: 40%;
-    margin-left: 21%;
+    width: 63%;
     margin-top: 2%;
-    background-color: #fecea8;
+    background-color: white;
     color: black;
     padding: 10px;
     border-radius: 20px;
@@ -72,6 +71,7 @@ nav ul{overflow:hidden; overflow-y:scroll;}
     background-color: #ff847c;
     border-color: #e84a5f;
     color: white;
+    margin: 2%;
 }
 
 .btn:hover{

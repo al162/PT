@@ -14,7 +14,8 @@ urlpatterns = [
 
     path('ordenes/', views.OrdenCreate.as_view(), name= 'ordenes'),
     path('ordenesCentro/', views.OrdenesVer.as_view(), name='ver_ordenes'),
-     path('ordenesCentro/<int:pk>/', views.OrdenesDetail.as_view(), name='orden_detail'),
+    path('ordenesCentro/<int:pk>/', views.OrdenesDetail.as_view(), name='orden_detail'),
+    path('ordenesCentro/<int:id>/<int:pk>', views.OrdenesDetail.delete, name= 'borrar_orden'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

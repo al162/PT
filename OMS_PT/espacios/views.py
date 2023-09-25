@@ -6,7 +6,9 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 from rest_framework import status
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.db.models import Q
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 #Vista para el indice de espacios
 class EspacioIndex(APIView):
@@ -120,6 +122,14 @@ class OrdenCreate(APIView):
         
         if(serializer.is_valid()):
             serializer.save()
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "order_notification_group",
+            {
+                "type": "notify_order_created",
+            }
+        )
     
         return redirect('ordenes')
 
@@ -139,8 +149,37 @@ class OrdenesDetail(APIView):
 
     def get(self, request, pk):
         espacio = get_object_or_404(Espacio, pk=pk)
-        queryset = EspacioSerializer(espacio)
-        serializer = Orden.objects.all()
-        return Response({'espacio': queryset, 'serializer': serializer})
+        productos = Producto.objects.filter(espacio_id = pk)
+        ordenesProductos = OrdenProducto.objects.filter(producto__in=productos.values_list('id')).values('cantidad', 'orden_id', 'producto_id').distinct()
+        ordenes = Orden.objects.filter(id__in = ordenesProductos.values_list('orden')).order_by('date')
 
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            f"orden_producto_updates_{pk}",
+            {
+                "type": "send_update",
+                "message": {
+                    'espacio': espacio,
+                    'ordenes': ordenes,
+                    'productos': productos,
+                    'ordenesProductos': ordenesProductos,
+                },
+            },
+        )
+
+
+        return Response({'espacio': espacio, 'ordenes': ordenes, 'productos': productos, 'ordenesProductos': ordenesProductos})
+
+    def delete(request, id, pk):
+        orden = Orden.objects.get(pk = pk)
+        productos = Producto.objects.filter(espacio_id = id)
+        ordenesProductos = OrdenProducto.objects.filter(Q(orden_id = pk, producto__in = productos.values_list('id')))
+    
+        for ordenProducto in ordenesProductos:
+            ordenProducto.delete()
+        
+        if(not (OrdenProducto.objects.filter(orden__id = pk))):
+            orden.delete()
+    
+        return redirect ('/ordenesCentro/%d' %id)
 
