@@ -29,13 +29,13 @@ li{
     float: right;
 }
 
-.btn{
+#crear{
     background-color: #ff847c;
     border-color: #e84a5f;
     color: white;
 }
 
-.btn:hover{
+#crear:hover{
     background-color: #e84a5f;
     border-color: red;
     color: white;

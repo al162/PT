@@ -1,0 +1,27 @@
+body{
+    background-color: #212121;
+}
+
+
+.login_box{
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 1%;
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    padding: 1%;
+}
+
+.form-group{
+    margin-left: 25%;
+}
+
+.form-control{
+    width: 70%;
+}
+
+.btn{
+    background-color: #264b5d;
+    color: white;
+}

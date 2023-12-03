@@ -26,7 +26,7 @@ body{
 
 #crud_box_prod{
     width: 40%;
-    margin-left: 5%;
+    margin-left: 25%;
     margin-top: 1%;
     background-color: #ff847c;
     color: white;
@@ -36,7 +36,7 @@ body{
 
 .crud_lbl{
     color: black;
-    margin-left: 21%;
+    margin-left: 11%;
 }
 
 .form-control{
@@ -45,7 +45,7 @@ body{
 }
 
 #listaEspacios {
-    width: 63%;
+    width: 100%;
     margin-top: 2%;
     background-color: white;
     color: black;
@@ -68,8 +68,8 @@ nav ul{overflow:hidden; overflow-y:scroll;}
 }
 
 .btn{
-    background-color: #ff847c;
-    border-color: #e84a5f;
+    background-color: #803530;
+    border-color: #4b1920;
     color: white;
     margin: 2%;
 }

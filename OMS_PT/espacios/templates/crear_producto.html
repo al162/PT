@@ -1,0 +1,134 @@
+{% load rest_framework %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/detail_espacio.css" type="text/css">
+    <script src="https://kit.fontawesome.com/3994568d91.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="/static/addProdEsp.js"></script>
+
+    <title>Productos</title>
+</head>
+<body>
+    <div id="titulo">
+        <h1>Productos</h1>
+    </div>
+    
+
+    <div id="crud_box_prod" class="row">
+        <form class="form-horizontal" action="{% url 'crear_producto' espacio.pk %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <label>Crear nuevo producto :</label>
+                </div>
+            </div>
+            {% render_field serializer_prod.nombre_prod style=style %}
+            {% render_field serializer_prod.precio style=style %}
+            <input type="hidden" name="espacio_id" value="{{espacio.pk}}">
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Agregar producto al espacio</button>
+                </div>
+            </div>
+        </form>
+
+
+
+        Espacio:
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{espacio.nombre_spc}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {%for espacio in espacios %}
+                    <a class="dropdown-item" href='{% url "crear_producto" espacio.pk %}' >{{espacio.nombre_spc}}</a>
+                {%endfor%}
+            </div>
+          </div>
+
+
+        <div id="listaEspacios" class="col-sm-offset-2 col-sm-12">
+            <nav>
+                <h3>Productos en el espacio:</h3>
+                <div class="scroll">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Modificar</th>
+                                <th scope="col">Borrar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-table">
+                        {%for producto in prod_list_espacio %}
+                        
+                        <tr>
+                            <td>{{producto.nombre_prod}}</td>
+                            <td>{{producto.precio}}</td>
+                            <td><a href='{% url "detail_producto" producto.pk producto.espacio_id %}' class="fa-solid fa-pen-to-square"></a></td>
+                            <td><a href='{% url "borrar_producto_crear" producto.pk espacio.pk%}' class="fa-solid fa-trash"></a></td>
+                        </tr>
+                        
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                </div>
+
+
+
+            </nav>
+        </div>
+
+        <div id="listaEspacios" class="col-sm-offset-2 col-sm-12">
+            <nav>
+                <h3>Productos en total:</h3>
+                <div class="scroll">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Modificar</th>
+                                <th scope="col">Borrar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-table">
+                        {%for producto in prod_list_total %}
+                        
+                        <tr>
+                            <td>{{producto.nombre_prod}}</td>
+                            <td>{{producto.precio}}</td>
+                            <td><a href='{% url "detail_producto" producto.pk producto.espacio_id %}' class="fa-solid fa-pen-to-square"></a></td>
+                            <td><a href='{% url "borrar_producto_crear" producto.pk espacio.pk%}' class="fa-solid fa-trash"></a></td>
+                        </tr>
+                        
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                </div>
+
+
+
+            </nav>
+        </div>
+    </div>
+
+    
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <a href="/espacios/">
+                <button type="button" class="btn btn-success btn-lg">Volver</button>
+            </a>
+        </div>
+    </div>
+    
+</body>

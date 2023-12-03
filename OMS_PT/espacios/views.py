@@ -1,6 +1,7 @@
 from collections import Counter
+
 from espacios.models import Espacio, Producto, Orden, OrdenProducto
-from espacios.serializers import EspacioSerializer, ProductoSerializer, OrdenSerializer, OrdenProductoSerializer
+from espacios.serializers import EspacioSerializer, ProductoSerializer, OrdenSerializer, LoginSerializer
 from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
@@ -9,7 +10,39 @@ from django.shortcuts import get_object_or_404, redirect
 from django.db.models import Q
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.contrib import messages
+from rest_framework import permissions
+from . import serializers
+from rest_framework import views
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import login, logout
 
+class LoginView(views.APIView):
+    permission_classes = [permissions.AllowAny,]
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'login.html'
+
+    def get(self, request):
+        serializer = LoginSerializer()
+        return Response({'serializer': serializer})
+
+    def post(self, request, format=None):
+        serializer = serializers.LoginSerializer(data=self.request.data,
+            context={ 'request': self.request })
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            login(request, user)
+            return redirect('espacios')
+        else:
+            return redirect('login')
+        
+class LogoutView(views.APIView):
+
+    def post(self, request, format=None):
+        logout(request)
+        return redirect('login')
+    
 #Vista para el indice de espacios
 class EspacioIndex(APIView):
     renderer_classes = [TemplateHTMLRenderer]
@@ -21,6 +54,9 @@ class EspacioIndex(APIView):
     
     def delete(request, pk):
         espacio = Espacio.objects.get(pk = pk)
+        productos = Producto.objects.filter(espacio_id = pk)
+        for producto in productos:
+            producto.delete()
         espacio.delete()
         return redirect('espacios')
     
@@ -52,7 +88,7 @@ class EspacioDetail(APIView):
         espacio = get_object_or_404(Espacio, pk=pk)
         serializer_spc = EspacioSerializer(espacio)
         serializer_prod = ProductoSerializer()
-        query_prod_list = Producto.objects.all()
+        query_prod_list = Producto.objects.filter(espacio_id = pk)
         return Response({'serializer_spc': serializer_spc, 'serializer_prod': serializer_prod, 'espacio': espacio, 'product_list': query_prod_list, 'style': self.style})
 
     def post(self, request, pk):
@@ -74,27 +110,99 @@ class EspacioVer(APIView):
         serializer = EspacioSerializer(espacio)
         return Response({'serializer': serializer, 'espacio': espacio, 'product_list': query_prod_list})
 
-#Vista para actualizar datos de un producto    
-class ProductoDetail(APIView):
+
+#Vista por defecto de productos
+class ProductoIndex(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'index_producto.html'
+
+    def get(self, request):
+            espacios = Espacio.objects.all()
+            current_espacio = Espacio.objects.first()
+            prod_espacio = Producto.objects.filter(espacio_id = current_espacio.id)
+            prod_total = Producto.objects.all()
+
+            return Response({'prod_list_total': prod_total, 'prod_list_espacio' : prod_espacio, 'current_espacio': current_espacio, 'espacios': espacios})
+
+    def delete(request, pk, id):
+        producto = Producto.objects.get(pk = pk)
+        producto.delete()
+        return redirect ('/productos/%d' %id)
+
+
+#Vista de productos de un espacio en especifico
+class ProductoEspIndex(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'index_producto.html'
+
     def get(self, request, pk):
-        producto = get_object_or_404(Producto, pk=pk)
-        query = Producto.objects.all()
-        return Response({'serializer': query})
+            espacios = Espacio.objects.all()
+            current_espacio = Espacio.objects.get(pk = pk)
+            prod_espacio = Producto.objects.filter(espacio_id = pk)
+            prod_total = Producto.objects.all()
+
+            return Response({'prod_list_total': prod_total, 'prod_list_espacio' : prod_espacio, 'current_espacio': current_espacio, 'espacios': espacios})
+
+
+#Vista para crear productos    
+class ProductoCreate(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'crear_producto.html'
+    style = {'template_pack': 'rest_framework/horizontal/'}
+
+    def get(self, request, pk):
+        espacios = Espacio.objects.all()
+        espacio = get_object_or_404(Espacio, pk=pk)
+        prod_espacio = Producto.objects.filter(espacio_id = pk)
+        prod_total = Producto.objects.all()
+        serializer_prod = ProductoSerializer()
+
+        return Response({'prod_list_total': prod_total, 'prod_list_espacio' : prod_espacio, 'espacio': espacio, 'espacios': espacios, 'serializer_prod': serializer_prod, 'style': self.style})
 
     def post(self, request, pk):  
         serializer = ProductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return redirect('/espacios/espacioDetail/%d' %pk)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return redirect('/productos/productosCreate/%d' %pk)
+        print(serializer.errors)
+        return redirect ('/productos/productosCreate/%d' %pk, {'mensaje': serializer.errors})
     
     def delete(request, pk, id):
         producto = Producto.objects.get(pk = pk)
         producto.delete()
-        return redirect ('/espacios/espacioDetail/%d' %id)
+        return redirect ('/productos/productosCreate/%d' %id)
+    
+class ProductoDetail(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'detail_producto.html'
+    style = {'template_pack': 'rest_framework/horizontal/'}
+
+    def get(self, request, pk, id):
+        espacios = Espacio.objects.all()
+        espacio = get_object_or_404(Espacio, pk=id)
+        producto = get_object_or_404(Producto, pk = pk)
+        prod_espacio = Producto.objects.filter(espacio_id = id)
+        prod_total = Producto.objects.all()
+        serializer_prod = ProductoSerializer(producto)
+
+        return Response({'prod_list_total': prod_total, 'prod_list_espacio' : prod_espacio, 'espacio': espacio, 'espacios': espacios, 'serializer_prod': serializer_prod, 'producto': producto,'style': self.style})
+
+    def post(self, request, pk, id):  
+        producto = get_object_or_404(Producto, pk=pk)
+        serializer = ProductoSerializer(producto, data=request.data)
+        if not serializer.is_valid():
+            return Response({'serializer': serializer, 'producto': producto})
+        serializer.save()
+        return redirect('/productos/productosCreate/%d' %id, {'mensaje': serializer.errors})
+    
+    def delete(request, pk, id):
+        producto = Producto.objects.get(pk = pk)
+        producto.delete()
+        return redirect ('/productos/productosCreate/%d' %id)
 
 #Vista para crear una orden
 class OrdenCreate(APIView):
+    permission_classes = [permissions.AllowAny,]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'crear_orden.html'
 
@@ -136,6 +244,7 @@ class OrdenCreate(APIView):
 
 #Vista para consultar ordenes por espacio
 class OrdenesVer(APIView):
+    permission_classes = [permissions.AllowAny,]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'centro_ordenes.html'
 
@@ -144,6 +253,7 @@ class OrdenesVer(APIView):
         return Response({'espacios': queryset})
     
 class OrdenesDetail(APIView):
+    permission_classes = [permissions.AllowAny,]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'orden_espacio.html'
 
