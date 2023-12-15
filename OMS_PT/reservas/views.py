@@ -23,7 +23,7 @@ class ReservasIndex(APIView):
 
     def get(self, request):
         queryset = Reserva.objects.all()
-        return Response({'reserva': queryset})
+        return Response({'reservas': queryset})
 
 class ReservaCreate(APIView):
     renderer_classes = [TemplateHTMLRenderer]
@@ -32,6 +32,14 @@ class ReservaCreate(APIView):
 
     def get(self, request):
         serializer = ReservaSerializer()
-        return Response({'serializer': serializer, 'style': self.style})
+        mesas = Mesa.objects.all()
+        return Response({'serializer': serializer, 'mesas': mesas,'style': self.style})
+    
+    def post(self, request):
+        serializer = ReservaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return redirect('reservas')
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

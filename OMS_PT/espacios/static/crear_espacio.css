@@ -1,10 +1,9 @@
 body{
-    background-color: #fecea8;
+    background-color: #005792;
 }
 
 #titulo{
-    background-color: #ff847c;
-    background-image: linear-gradient(to bottom right, #ff847c, #ff8401);
+    background-color: #00204a;
     text-align: center;
     color: white;
     padding: 1%;
@@ -18,9 +17,9 @@ body{
     width: 50%;
     margin-left: 25%;
     margin-top: 5%;
-    background-color: #ff847c;
+    background-color: #00bbf0;
     color: white;
-    border-radius: 20px;
+    border-radius: 1px;
     padding: 1%;
 }
 
@@ -28,7 +27,7 @@ body{
     width: 40%;
     margin-left: 5%;
     margin-top: 1%;
-    background-color: #ff847c;
+    background-color: #00bbf0;
     color: white;
     border-radius: 20px;
     padding: 1%;
@@ -49,13 +48,13 @@ body{
 }
 
 .btn{
-    background-color: #ff847c;
-    border-color: #e84a5f;
+    background-color: #fdb44b;
+    border-color: #f7a635;
     color: white;
 }
 
 .btn:hover{
-    background-color: #e84a5f;
-    border-color: red;
+    background-color: #fc9608;
+    border-color: #fa9303;
     color: white;
 }

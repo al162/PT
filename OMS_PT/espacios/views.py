@@ -333,7 +333,7 @@ class MesaDetail(APIView):
         mesa = get_object_or_404(Mesa, pk=pk)
         serializer_mesa = MesaSerializer(mesa)
     
-        return Response({'serializer_mesa': serializer_mesa})
+        return Response({'serializer_mesa': serializer_mesa, 'mesa': mesa})
 
     def post(self, request, pk):
         mesa = get_object_or_404(Mesa, pk=pk)
@@ -350,4 +350,17 @@ class MesaView(APIView):
     def get(self, request, pk):
         mesa = get_object_or_404(Mesa, pk=pk)
         serializer = MesaSerializer(mesa)
-        return Response({'serializer': serializer})
+        return Response({'serializer': serializer, 'mesa': mesa})
+
+class ReservaIndex(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'consultar_reservas.html'
+
+    def get(self, request):
+        reservas = Reserva.objects.all()
+        return Response({'reservas': reservas})
+
+    def delete(request, pk):
+        reserva = Reserva.objects.get(pk = pk)
+        reserva.delete()
+        return redirect('reservas_admin')

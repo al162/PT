@@ -17,9 +17,12 @@ urlpatterns = [
     
     path('mesas/', views.MesaIndex.as_view(), name='mesas'),
     path('mesas/crearMesa/', views.MesaCreate.as_view(), name='crear_mesa'),
-    path('mesas/<int:pk>', views.MesaIndex.delete, name="borrar_mesa"),
+    path('mesas/<int:pk>/', views.MesaIndex.delete, name="borrar_mesa"),
     path('mesas/mesaDetail/<int:pk>/', views.MesaDetail.as_view(), name= 'detail_mesa'),
     path('mesas/mesaVer/<int:pk>/', views.MesaView.as_view(), name="ver_mesa"),
+
+    path('reservas/', views.ReservaIndex.as_view(), name= 'reservas_admin'),
+    path('reservas/<int:pk>', views.ReservaIndex.delete, name= 'borrar_reserva'),
 
     path('productos/', views.ProductoIndex.as_view(), name = 'productos'),
 

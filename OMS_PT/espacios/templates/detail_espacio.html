@@ -38,7 +38,9 @@
     </div>
 
     <div id="crud_box_prod" class="row">
-        <a href="{% url 'crear_producto' espacio.pk %}">Agregar productos</a>
+        <button class="btn btn-default">
+            <a id="agregar" href="{% url 'crear_producto' espacio.pk %}">Agregar productos</a>
+        </button>
     </div>
 
     
