@@ -1,0 +1,49 @@
+body{
+    background-color: #005792;
+}
+
+h3{
+    color: white;
+}
+
+#titulo{
+    background-color: #00204a;
+    text-align: center;
+    color: white;
+    padding: 1%;
+}
+
+#boton{
+    margin: 10px;
+}
+
+#listaEspacios {
+    width: 50%;
+    margin-left: 10px;
+}
+
+li{
+    display: flex;
+    justify-content: space-around;
+}
+
+.options{
+    margin-left: 10px;
+    float: right;
+}
+
+#crear{
+    background-color: #fdb44b;
+    border-color: #f7a635;
+    color: white;
+}
+
+#crear:hover{
+    background-color: #fc9608;
+    border-color: #fa9303;
+    color: white;
+}
+
+.nav-link{
+    color: white;
+}

@@ -1,0 +1,41 @@
+#buscar{
+    padding-top: 1%;
+    padding-left: 40%;
+    width: 60%;
+}
+
+label{
+    color: white;    
+}
+
+#btn-buscar{
+    background-color: #fdb44b;
+    border-color: #f7a635;
+    color: white;
+}
+
+#btn-buscar:hover{
+    background-color: #fc9608;
+    border-color: #fa9303;
+    color: white;
+}
+
+#listaReservas{
+    width: 50%;
+    margin-left: 25%;
+}
+
+.btn_reservar{
+    margin-top: 5%;
+    margin-left: 580px;
+    width: 350px;
+    height: 150px;
+    font-size: large;
+    background-color: #e84a5f;
+    color: white;
+}
+
+.scroll {
+    overflow:scroll;
+    height:150px;
+}

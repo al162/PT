@@ -1,0 +1,15 @@
+body{
+    background-color: #005792;;
+}
+
+#titulo{
+    background-color: #00204a;
+    text-align: center;
+    color: white;
+    padding: 1%;
+}
+
+
+option{
+    color: black;
+}
