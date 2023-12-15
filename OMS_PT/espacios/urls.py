@@ -14,7 +14,12 @@ urlpatterns = [
     path('espacios/crearEspacio/', views.EspacioCreate.as_view(), name= 'crear_espacio'),
     path('espacios/espacioDetail/<int:pk>/', views.EspacioDetail.as_view(), name= 'detail_espacio'),
     path('espacios/espacioVer/<int:pk>/', views.EspacioVer.as_view(), name= 'ver_espacio'),
-    #path('espacios/addProducto/<int:pk>', views.ProductoDetail.as_view(), name= 'add_producto'),
+    
+    path('mesas/', views.MesaIndex.as_view(), name='mesas'),
+    path('mesas/crearMesa/', views.MesaCreate.as_view(), name='crear_mesa'),
+    path('mesas/<int:pk>', views.MesaIndex.delete, name="borrar_mesa"),
+    path('mesas/mesaDetail/<int:pk>/', views.MesaDetail.as_view(), name= 'detail_mesa'),
+    path('mesas/mesaVer/<int:pk>/', views.MesaView.as_view(), name="ver_mesa"),
 
     path('productos/', views.ProductoIndex.as_view(), name = 'productos'),
 

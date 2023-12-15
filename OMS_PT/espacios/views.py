@@ -1,7 +1,9 @@
 from collections import Counter
 
 from espacios.models import Espacio, Producto, Orden, OrdenProducto
+from reservas.models import Reserva, Mesa
 from espacios.serializers import EspacioSerializer, ProductoSerializer, OrdenSerializer, LoginSerializer
+from reservas.serializers import ReservaSerializer, MesaSerializer
 from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
@@ -293,3 +295,59 @@ class OrdenesDetail(APIView):
     
         return redirect ('/ordenesCentro/%d' %id)
 
+class MesaIndex(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'index_mesas.html'
+
+    def get(self, request):
+        mesas = Mesa.objects.all()
+        return Response({'mesas': mesas})
+
+    def delete(request, pk):
+        mesa = Mesa.objects.get(pk = pk)
+        mesa.delete()
+        return redirect('mesas')
+
+class MesaCreate(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'crear_mesa.html'
+
+    def get(self, request):
+        serializer = MesaSerializer()
+
+        return Response({'serializer': serializer})
+
+    def post(self, request):
+        serializer = MesaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return redirect('mesas')
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MesaDetail(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'detail_mesa.html'
+    
+
+    def get(self, request, pk):
+        mesa = get_object_or_404(Mesa, pk=pk)
+        serializer_mesa = MesaSerializer(mesa)
+    
+        return Response({'serializer_mesa': serializer_mesa})
+
+    def post(self, request, pk):
+        mesa = get_object_or_404(Mesa, pk=pk)
+        serializer = MesaSerializer(mesa, data=request.data)
+        if not serializer.is_valid():
+            return Response({'serializer': serializer})
+        serializer.save()
+        return redirect('mesas')
+
+class MesaView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'ver_mesa.html'
+
+    def get(self, request, pk):
+        mesa = get_object_or_404(Mesa, pk=pk)
+        serializer = MesaSerializer(mesa)
+        return Response({'serializer': serializer})

@@ -1,7 +1,7 @@
 from collections import Counter
 
 from reservas.models import Reserva, Mesa
-from espacios.serializers import EspacioSerializer, ProductoSerializer, OrdenSerializer, LoginSerializer
+from reservas.serializers import MesaSerializer,ReservaSerializer 
 from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
@@ -19,9 +19,19 @@ from django.contrib.auth import login, logout
 
 class ReservasIndex(APIView):
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'index_reserva.html'
+    template_name = 'index_reservas.html'
 
     def get(self, request):
         queryset = Reserva.objects.all()
         return Response({'reserva': queryset})
-    
+
+class ReservaCreate(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = "crear_reserva.html"
+    style = {'template_pack': 'rest_framework/horizontal/'}
+
+    def get(self, request):
+        serializer = ReservaSerializer()
+        return Response({'serializer': serializer, 'style': self.style})
+
+
